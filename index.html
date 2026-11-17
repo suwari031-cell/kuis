@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misi Penjelajah Alam - Kelas X</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;font-family:Arial,sans-serif;
+ background:linear-gradient(135deg,#d8f8e3,#d9edff);
+ color:#183b32;min-height:100vh;
+}
+header{
+ background:#167b50;color:white;
+ text-align:center;padding:22px 12px;
+ border-radius:0 0 28px 28px;
+}
+header h1{font-size:clamp(25px,4vw,42px);margin:5px}
+header p{margin:8px;font-size:17px}
+.container{
+ width:min(950px,94%);margin:22px auto;
+}
+.panel{
+ background:white;border-radius:24px;
+ padding:clamp(18px,4vw,32px);
+ box-shadow:0 8px 25px #245a3820;
+ margin-bottom:18px;
+}
+.hero{text-align:center}
+.hero .nature{font-size:85px}
+h2{color:#167b50}
+.info{
+ display:grid;grid-template-columns:repeat(3,1fr);
+ gap:10px;margin:20px 0;
+}
+.info div{
+ background:#e8f8ed;border-radius:15px;
+ padding:14px;text-align:center;font-weight:bold;
+}
+button{
+ border:0;border-radius:15px;padding:17px 20px;
+ font-size:19px;font-weight:bold;cursor:pointer;
+ min-height:58px;touch-action:manipulation;
+ transition:.15s;
+}
+button:active{transform:scale(.97)}
+.primary{background:#168c56;color:white;width:100%}
+.primary:hover{background:#096b40}
+.option{
+ display:block;width:100%;text-align:left;
+ background:#eef6ff;color:#214b66;
+ border:3px solid transparent;margin:12px 0;
+ min-height:68px;
+}
+.option:hover{background:#dceeff}
+.option.correct{background:#d3f6dc;border-color:#239b4b}
+.option.wrong{background:#ffe0df;border-color:#df5149}
+.option:disabled{cursor:default;opacity:1}
+.topbar{
+ display:flex;justify-content:space-between;
+ gap:10px;flex-wrap:wrap;font-weight:bold;
+ margin-bottom:16px;
+}
+.progress{
+ height:14px;background:#e4eee7;
+ border-radius:20px;overflow:hidden;margin:12px 0 22px;
+}
+#bar{height:100%;width:0;background:#27ad67;transition:.3s}
+.question{
+ font-size:clamp(21px,3vw,29px);
+ line-height:1.4;font-weight:bold;margin:20px 0;
+}
+.feedback{
+ padding:17px;border-radius:15px;
+ margin-top:15px;font-size:18px;
+ line-height:1.5;display:none;
+}
+.good{background:#dcf7e4;color:#176338}
+.bad{background:#fff0d9;color:#80500c}
+#next{margin-top:15px}
+.center{text-align:center}
+.bigscore{font-size:65px;color:#168c56;font-weight:bold}
+.hidden{display:none}
+.footer{text-align:center;padding:20px;color:#527264}
+@media(max-width:550px){
+ .info{grid-template-columns:1fr}
+ .topbar{font-size:15px}
+ button{font-size:17px}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <h1>🌿 MISI PENJELAJAH ALAM 🌿</h1>
+ <p>Petualangan Belajar Mengenal Makhluk Hidup</p>
+ <p>IPAS • Kelas X SMK • Lingkungan Hidup</p>
+</header>
+
+<main class="container">
+
+<section id="start" class="panel hero">
+ <div class="nature">🌳 🦋 🐦</div>
+ <h2>Selamat Datang, Penjelajah!</h2>
+ <p>
+   Ayo jelajahi dunia alam dan buktikan kemampuanmu
+   mengenali ciri-ciri makhluk hidup!
+ </p>
+ <div class="info">
+  <div>📚 10 Soal</div>
+  <div>⭐ Skor Maksimal 100</div>
+  <div>🎯 Pilihan Ganda</div>
+ </div>
+ <p><b>Petunjuk permainan:</b></p>
+ <p>
+  Bacalah pertanyaan dengan teliti, pilih satu jawaban
+  yang paling tepat, kemudian lihat umpan baliknya.
+ </p>
+ <button class="primary" onclick="startGame()">
+  🚀 MULAI PETUALANGAN
+ </button>
+</section>
+
+<section id="quiz" class="panel hidden">
+ <div class="topbar">
+  <span id="number">Soal 1 dari 10</span>
+  <span>⭐ Skor: <span id="score">0</span></span>
+ </div>
+ <div class="progress"><div id="bar"></div></div>
+ <div id="picture" class="center" style="font-size:65px"></div>
+ <div id="question" class="question"></div>
+ <div id="options"></div>
+ <div id="feedback" class="feedback"></div>
+ <button id="next" class="primary hidden" onclick="nextQuestion()">
+  SOAL BERIKUTNYA ➜
+ </button>
+</section>
+
+<section id="result" class="panel center hidden">
+ <div style="font-size:75px" id="medal">🏆</div>
+ <h2>Petualangan Selesai!</h2>
+ <p>Hebat! Kamu telah menyelesaikan misi penjelajah alam.</p>
+ <div class="bigscore" id="finalScore">0</div>
+ <h3 id="grade"></h3>
+ <p id="message"></p>
+ <div class="info">
+  <div>✅ Benar: <span id="correct">0</span></div>
+  <div>❌ Salah: <span id="incorrect">0</span></div>
+  <div>📊 Total: 10 soal</div>
+ </div>
+ <button class="primary" onclick="startGame()">
+  🔄 ULANGI PERMAINAN
+ </button>
+</section>
+
+</main>
+
+<div class="footer">
+ 🌱 Belajar IPAS • Cintai Lingkungan • Jaga Kehidupan 🌱
+</div>
+
+<script>
+const questions=[
+{
+ icon:"🌱",
+ q:"Tumbuhan yang tumbuh semakin tinggi dan besar menunjukkan ciri makhluk hidup berupa ...",
+ a:["Bernapas","Tumbuh dan berkembang","Berpindah tempat","Mengeluarkan suara"],
+ c:1,
+ explain:"Benar! Tumbuhan mengalami pertambahan ukuran dan perkembangan bentuk tubuh."
+},
+{
+ icon:"🐟",
+ q:"Ikan mengambil oksigen yang terlarut dalam air menggunakan ...",
+ a:["Paru-paru","Kulit","Insang","Daun"],
+ c:2,
+ explain:"Tepat! Insang merupakan alat pernapasan ikan yang membantu mengambil oksigen dari air."
+},
+{
+ icon:"🐈",
+ q:"Kucing berlari ketika melihat anjing mendekatinya. Hal ini menunjukkan ciri makhluk hidup yaitu ...",
+ a:["Peka terhadap rangsangan","Berkembang biak","Tumbuh","Membutuhkan makanan"],
+ c:0,
+ explain:"Hebat! Kucing merespons rangsangan dari lingkungan, yaitu kehadiran anjing."
+},
+{
+ icon:"🌻",
+ q:"Bunga matahari mengarahkan pertumbuhannya ke arah cahaya matahari. Peristiwa ini disebut ...",
+ a:["Fotosintesis","Fototropisme","Respirasi","Adaptasi suhu"],
+ c:1,
+ explain:"Benar! Fototropisme adalah respons pertumbuhan tumbuhan terhadap arah datangnya cahaya."
+},
+{
+ icon:"🐣",
+ q:"Ayam bertelur dan menghasilkan keturunan. Ciri makhluk hidup yang ditunjukkan adalah ...",
+ a:["Bernapas","Bergerak","Berkembang biak","Mengeluarkan zat sisa"],
+ c:2,
+ explain:"Tepat! Berkembang biak adalah kemampuan menghasilkan keturunan untuk mempertahankan jenisnya."
+},
+{
+ icon:"🦌",
+ q:"Rusa memakan rumput untuk memperoleh energi. Ini menunjukkan bahwa makhluk hidup ...",
+ a:["Membutuhkan makanan","Tidak membutuhkan air","Tidak bergerak","Tidak bernapas"],
+ c:0,
+ explain:"Benar! Makhluk hidup membutuhkan nutrisi sebagai sumber energi dan bahan penyusun tubuh."
+},
+{
+ icon:"💧",
+ q:"Manusia mengeluarkan keringat ketika suhu tubuh meningkat. Ini termasuk ciri ...",
+ a:["Berkembang biak","Mengeluarkan zat sisa","Tumbuh","Berfotosintesis"],
+ c:1,
+ explain:"Bagus! Keringat merupakan salah satu bentuk pengeluaran zat sisa sekaligus membantu mengatur suhu tubuh."
+},
+{
+ icon:"🦋",
+ q:"Ulat berubah menjadi kepompong kemudian menjadi kupu-kupu. Peristiwa ini disebut ...",
+ a:["Metamorfosis","Respirasi","Fotosintesis","Ekskresi"],
+ c:0,
+ explain:"Benar! Metamorfosis adalah perubahan bentuk tubuh selama perkembangan organisme."
+},
+{
+ icon:"🧍",
+ q:"Manusia memerlukan oksigen untuk menghasilkan energi melalui proses ...",
+ a:["Fotosintesis","Respirasi","Penguapan","Penyerbukan"],
+ c:1,
+ explain:"Tepat! Respirasi atau pernapasan sel merupakan proses pelepasan energi dari zat makanan."
+},
+{
+ icon:"🌵",
+ q:"Kaktus memiliki daun berbentuk duri untuk mengurangi penguapan air. Hal ini merupakan contoh ...",
+ a:["Adaptasi","Berkembang biak","Bernapas","Bergerak"],
+ c:0,
+ explain:"Luar biasa! Adaptasi merupakan penyesuaian diri makhluk hidup terhadap lingkungannya."
+}
+];
+
+let current=0,score=0,answered=false,correct=0;
+
+function startGame(){
+ current=0;score=0;correct=0;
+ document.getElementById("start").classList.add("hidden");
+ document.getElementById("result").classList.add("hidden");
+ document.getElementById("quiz").classList.remove("hidden");
+ showQuestion();
+}
+
+function showQuestion(){
+ answered=false;
+ const q=questions[current];
+ document.getElementById("number").textContent=
+ "Soal "+(current+1)+" dari "+questions.length;
+ document.getElementById("score").textContent=score;
+ document.getElementById("bar").style.width=
+ (current/questions.length*100)+"%";
+ document.getElementById("picture").textContent=q.icon;
+ document.getElementById("question").textContent=q.q;
+
+ const options=document.getElementById("options");
+ options.innerHTML="";
+ q.a.forEach((answer,index)=>{
+  const btn=document.createElement("button");
+  btn.className="option";
+  btn.textContent=String.fromCharCode(65+index)+". "+answer;
+  btn.onclick=()=>chooseAnswer(index);
+  options.appendChild(btn);
+ });
+
+ document.getElementById("feedback").style.display="none";
+ document.getElementById("next").classList.add("hidden");
+}
+
+function chooseAnswer(index){
+ if(answered)return;
+ answered=true;
+
+ const q=questions[current];
+ const buttons=document.querySelectorAll(".option");
+ const feedback=document.getElementById("feedback");
+
+ buttons.forEach((btn,i)=>{
+  btn.disabled=true;
+  if(i===q.c)btn.classList.add("correct");
+  if(i===index && index!==q.c)btn.classList.add("wrong");
+ });
+
+ if(index===q.c){
+  score+=10;correct++;
+  feedback.className="feedback good";
+  feedback.innerHTML="✅ <b>LUAR BIASA! Jawaban benar!</b><br>"+q.explain;
+ }else{
+  feedback.className="feedback bad";
+  feedback.innerHTML="💡 <b>Belum tepat, tetap semangat!</b><br>"+
+  "Jawaban yang benar: "+q.a[q.c]+".<br>"+q.explain;
+ }
+
+ document.getElementById("score").textContent=score;
+ feedback.style.display="block";
+
+ const next=document.getElementById("next");
+ next.classList.remove("hidden");
+ next.textContent=current===questions.length-1?
+ "🏆 LIHAT HASIL PERMAINAN":"SOAL BERIKUTNYA ➜";
+}
+
+function nextQuestion(){
+ if(!answered)return;
+ current++;
+ if(current<questions.length){
+  showQuestion();
+ }else{
+  finishGame();
+ }
+}
+
+function finishGame(){
+ document.getElementById("quiz").classList.add("hidden");
+ document.getElementById("result").classList.remove("hidden");
+ document.getElementById("bar").style.width="100%";
+
+ document.getElementById("finalScore").textContent=score;
+ document.getElementById("correct").textContent=correct;
+ document.getElementById("incorrect").textContent=10-correct;
+
+ let grade,message,medal;
+ if(score>=90){
+  grade="🌟 SANGAT BAIK!";
+  message="Luar biasa! Kamu adalah penjelajah alam sejati!";
+  medal="🏆";
+ }else if(score>=70){
+  grade="👏 BAIK!";
+  message="Bagus! Kamu sudah memahami sebagian besar materi.";
+  medal="🥇";
+ }else if(score>=50){
+  grade="💪 CUKUP!";
+  message="Terus berlatih agar semakin memahami ciri-ciri makhluk hidup.";
+  medal="🥈";
+ }else{
+  grade="🌱 AYO BELAJAR LAGI!";
+  message="Jangan menyerah! Pelajari kembali materi dan coba lagi.";
+  medal="🌻";
+ }
+
+ document.getElementById("grade").textContent=grade;
+ document.getElementById("message").textContent=message;
+ document.getElementById("medal").textContent=medal;
+}
+</script>
+</body>
+</html>
